@@ -10,9 +10,12 @@ import RealityKit
 import RealityKitContent
 
 struct ContentView: View {
+    @State private var todoLists: [TodoList] = []
     var body: some View {
         NavigationSplitView {
-            <#code#>
+            List(todoLists){ list in
+                
+            }
         } detail: {
             <#code#>
         }
