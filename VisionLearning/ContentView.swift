@@ -31,7 +31,10 @@ struct ContentView: View {
                
             }
         } detail: {
-            
+            if let selectedTodoList{
+                Text(selectedTodoList.title)
+                    .navigationTitle("Details for \(selectedTodoList.title)")
+            }
         }
 
     }
