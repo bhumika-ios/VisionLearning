@@ -11,7 +11,7 @@ struct TodoList: Identifiable{
     let id = UUID()
     let title: String
     
-    let items: [TodoItem]
+    var items: [TodoItem]
 }
 struct  TodoItem: Identifiable {
     let id = UUID()
