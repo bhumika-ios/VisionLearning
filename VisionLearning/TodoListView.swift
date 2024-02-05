@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TodoListView: View {
+    @Environment (\.modelContext) private var modelContext
     @State var list: TodoList
     @State private var showAddTodoAlert: Bool = false
     @State private var newTodoTitle: String = ""
@@ -17,11 +19,7 @@ struct TodoListView: View {
                 ForEach(list.items.filter{ $0.isDone == false }) { item in
                     HStack{
                         Button {
-                            if let itemIndex = list.items.firstIndex(where: { $0.id == item.id }){
-                                withAnimation{
-                                    list.items[itemIndex].isDone.toggle()
-                                }
-                            }
+                            item.isDone.toggle()
                         } label: {
                             Image (systemName: item.isDone ? "circle.fill" : "circle")
                         }
@@ -34,11 +32,7 @@ struct TodoListView: View {
                 ForEach(list.items.filter{ $0.isDone }) { item in
                     HStack{
                         Button {
-                            if let itemIndex = list.items.firstIndex(where: { $0.id == item.id }){
-                                withAnimation{
-                                    list.items[itemIndex].isDone.toggle()
-                                }
-                            }
+                            item.isDone.toggle()
                         } label: {
                             Image (systemName: item.isDone ? "circle.fill" : "circle")
                         }
@@ -58,7 +52,8 @@ struct TodoListView: View {
             TextField("Todo Title", text: $newTodoTitle)
             Button ("Cancel", role: .cancel, action: {})
             Button("Create"){
-                let todo = TodoItem(title: newTodoTitle, isDone: false)
+                let todo = TodoItem(title: newTodoTitle)
+                modelContext.insert(todo)
                 list.items.append(todo)
             }
         }

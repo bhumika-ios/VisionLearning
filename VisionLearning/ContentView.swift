@@ -8,9 +8,11 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftData
 
 struct ContentView: View {
-    @State private var todoLists: [TodoList] = []
+    @Environment (\.modelContext) private var modelContext
+    @Query private var todoLists: [TodoList]
     @State private var selectedTodoList: TodoList? = nil
     @State private var showAddListAlert: Bool = false
     @State private var newTitle : String = ""
@@ -35,8 +37,8 @@ struct ContentView: View {
                 TextField("Title", text: $newTitle)
                 Button("Cancel", role: .cancel, action: {})
                 Button("Add"){
-                    let list = TodoList(title: newTitle, items: [])
-                    todoLists.append(list)
+                    let list = TodoList(title: newTitle)
+                    modelContext.insert(list)
                 }
             }
         } detail: {
@@ -50,4 +52,5 @@ struct ContentView: View {
 
 #Preview(windowStyle: .automatic) {
     ContentView()
+        .modelContainer(for: TodoList.self)
 }

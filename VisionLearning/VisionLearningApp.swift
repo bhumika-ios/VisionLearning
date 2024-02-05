@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct VisionLearningApp: App {
@@ -13,5 +14,6 @@ struct VisionLearningApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: TodoList.self)
     }
 }
