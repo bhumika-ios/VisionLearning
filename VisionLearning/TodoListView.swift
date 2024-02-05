@@ -12,8 +12,41 @@ struct TodoListView: View {
     @State private var showAddTodoAlert: Bool = false
     @State private var newTodoTitle: String = ""
     var body: some View {
-        List(list.items) { item in
-            Text (item.title)
+        List{
+            Section("Todo"){
+                ForEach(list.items.filter{ $0.isDone == false }) { item in
+                    HStack{
+                        Button {
+                            if let itemIndex = list.items.firstIndex(where: { $0.id == item.id }){
+                                withAnimation{
+                                    list.items[itemIndex].isDone.toggle()
+                                }
+                            }
+                        } label: {
+                            Image (systemName: item.isDone ? "circle.fill" : "circle")
+                        }
+                        Text(item.title)
+                        Spacer ()
+                    }
+                }
+            }
+            Section("Done"){
+                ForEach(list.items.filter{ $0.isDone }) { item in
+                    HStack{
+                        Button {
+                            if let itemIndex = list.items.firstIndex(where: { $0.id == item.id }){
+                                withAnimation{
+                                    list.items[itemIndex].isDone.toggle()
+                                }
+                            }
+                        } label: {
+                            Image (systemName: item.isDone ? "circle.fill" : "circle")
+                        }
+                        Text(item.title)
+                        Spacer ()
+                    }
+                }
+            }
         }
         .navigationTitle("Details for \(list.title)")
         .toolbar {

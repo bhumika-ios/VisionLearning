@@ -6,15 +6,29 @@
 //
 
 import Foundation
+import SwiftData
 
-struct TodoList: Identifiable{
-    let id = UUID()
-    let title: String
+@Model
+class TodoList{
+   
+    var title: String
     
-    var items: [TodoItem]
+    @Relationship(deleteRule: .cascade)
+    var items: [TodoItem] = []
+    
+    init(title: String) {
+        self.title = title
+    }
 }
-struct  TodoItem: Identifiable {
-    let id = UUID()
-    let title : String
-    var isDone : Bool
+
+@Model
+class TodoItem {
+  
+    var title : String
+    var isDone : Bool = false
+    
+    init(title: String) {
+        self.title = title
+    }
+    
 }
