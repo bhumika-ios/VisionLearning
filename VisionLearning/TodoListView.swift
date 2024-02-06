@@ -14,47 +14,47 @@ struct TodoListView: View {
     @State private var showAddTodoAlert: Bool = false
     @State private var newTodoTitle: String = ""
     var body: some View {
-        List{
-            Section("Todo"){
-                ForEach(list.items.filter{ $0.isDone == false }) { item in
-                    HStack{
+        List {
+            Section ("Todo") {
+                ForEach(list.items.filter { $0.isDone == false }) { item in
+                    HStack {
                         Button {
                             item.isDone.toggle()
                         } label: {
                             Image (systemName: item.isDone ? "circle.fill" : "circle")
                         }
-                        Text(item.title)
+                            Text(item.title)
                         Spacer ()
                     }
                 }
             }
             Section("Done"){
-                ForEach(list.items.filter{ $0.isDone }) { item in
-                    HStack{
+                ForEach(list.items.filter { $0.isDone }) { item in
+                    HStack {
                         Button {
                             item.isDone.toggle()
                         } label: {
                             Image (systemName: item.isDone ? "circle.fill" : "circle")
                         }
                         Text(item.title)
-                        Spacer ()
+                        Spacer()
                     }
                 }
             }
         }
         .navigationTitle("Details for \(list.title)")
         .toolbar {
-            Button ("Add Todo") {
-                showAddTodoAlert.toggle()
+        Button ("Add Todo") {
+        showAddTodoAlert.toggle()
             }
         }
-        .alert("Add Todo", isPresented: $showAddTodoAlert) {
-            TextField("Todo Title", text: $newTodoTitle)
+        .alert( "Add Todo", isPresented: $showAddTodoAlert) {
+        TextField("Todo Title", text: $newTodoTitle)
             Button ("Cancel", role: .cancel, action: {})
-            Button("Create"){
+            Button ("Create") {
                 let todo = TodoItem(title: newTodoTitle)
-                modelContext.insert(todo)
-                list.items.append(todo)
+                modelContext.insert (todo)
+                list.items.append (todo)
             }
         }
         .id(list.id)

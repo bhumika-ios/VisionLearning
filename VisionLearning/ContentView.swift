@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import RealityKit
-import RealityKitContent
 import SwiftData
 
 struct ContentView: View {
@@ -50,7 +48,7 @@ struct ContentView: View {
     }
 }
 
-#Preview(windowStyle: .automatic) {
+#Preview {
     ContentView()
         .modelContainer(for: TodoList.self)
 }
