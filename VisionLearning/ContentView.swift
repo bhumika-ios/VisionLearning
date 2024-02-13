@@ -40,9 +40,12 @@ struct ContentView: View {
                 }
             }
         } detail: {
-            if let selectedTodoList{
-                TodoListView(list: selectedTodoList)
-            }
+            if let selectedTodoList = selectedTodoList {
+                            TodoListView(list: selectedTodoList)
+                                .id(selectedTodoList.id) // Use id to force update when selectedTodoList changes
+                        } else {
+                            Text("Select a TodoList")
+                        }
         }
 
     }
