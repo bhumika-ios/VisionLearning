@@ -68,23 +68,18 @@ struct TodoItemRow: View {
 //            }
         }
         .contextMenu(ContextMenu(menuItems: {
-            Button{
-                deleteTodoItem()
-            } label: {
-                HStack{
-                    Image(systemName: "trash")
-                      
-                      
-                    Text("Delete")
-                       
-                        
-                }
-                .foregroundColor(.red)
-            }
+            Button(action: {
+                           deleteTodoItem()
+                       }) {
+                           Label("Delete", systemImage: "trash")
+                               .foregroundColor(.red)
+                       }
             if !item.isDone {
-                Button("Edit"){
-                    isEditing = true
-                }
+                Button(action: {
+                               isEditing = true
+                           }) {
+                               Label("Edit", systemImage: "pencil")
+                           }
             }
         }))
         .alert( "Edit Todo", isPresented: $isEditing) {
