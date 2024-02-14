@@ -81,8 +81,10 @@ struct TodoItemRow: View {
                 }
                 .foregroundColor(.red)
             }
-            Button("Edit"){
-                isEditing = true
+            if !item.isDone {
+                Button("Edit"){
+                    isEditing = true
+                }
             }
         }))
         .alert( "Edit Todo", isPresented: $isEditing) {
