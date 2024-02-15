@@ -10,18 +10,28 @@ import SwiftData
 
 struct ContentView: View {
     @Environment (\.modelContext) private var modelContext
-    @Query private var todoLists: [TodoList]
+    @Query private var initialTodoLists: [TodoList]
+      @State private var todoLists: [TodoList] = []
     @State private var selectedTodoList: TodoList? = nil
     @State private var showAddListAlert: Bool = false
     @State private var newTitle : String = ""
     
     var body: some View {
         NavigationSplitView {
-            List(todoLists){ list in
-                Button(list.title){
-                    selectedTodoList = list
-                }
-            }
+            List {
+                           ForEach(todoLists) { list in
+                               Button(action: {
+                                   selectedTodoList = list
+                               }) {
+                                   Text(list.title)
+                               }
+                               .contextMenu {
+                                   Button("Delete") {
+                                       deleteTodoList(list)
+                                   }
+                               }
+                           }
+                       }
             .navigationTitle("TodoList")
             .toolbar{
                 Button(action: {
@@ -35,8 +45,10 @@ struct ContentView: View {
                 TextField("Title", text: $newTitle)
                 Button("Cancel", role: .cancel, action: {})
                 Button("Add"){
-                    let list = TodoList(title: newTitle)
-                    modelContext.insert(list)
+                    let newList = TodoList(title: newTitle)
+                                       modelContext.insert(newList)
+                                       updateTodoLists()
+                                       newTitle = "" // Clear the input field
                 }
             }
         } detail: {
@@ -47,8 +59,20 @@ struct ContentView: View {
                             Text("Select a TodoList")
                         }
         }
+        .onAppear {
+                   updateTodoLists()
+               }
 
     }
+    private func updateTodoLists() {
+            todoLists = initialTodoLists
+        }
+    private func deleteTodoList(_ list: TodoList) {
+            if let index = todoLists.firstIndex(where: { $0.id == list.id }) {
+                modelContext.delete(todoLists.remove(at: index))
+                selectedTodoList = nil
+            }
+        }
 }
 
 #Preview {
